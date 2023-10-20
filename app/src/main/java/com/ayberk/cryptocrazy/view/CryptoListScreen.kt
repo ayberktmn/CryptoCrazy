@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ayberk.cryptocrazy.Model.CryptoItem
 import com.ayberk.cryptocrazy.Model.CryptoListItem
 import com.ayberk.cryptocrazy.ViewModel.CryptoListViewModel
 
@@ -48,7 +49,7 @@ fun CryptoListScreen(
                 textAlign = TextAlign.Center,
                 fontSize = 44.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(10.dp))
             SearchBar(
@@ -124,7 +125,7 @@ fun CryptoList(
         modifier = Modifier.fillMaxSize()
     ) {
         if(isLoading) {
-            CircularProgressIndicator(color = Color.Blue)
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
         if(errorMessage.isNotEmpty()) {
             RetryView(error = errorMessage) {
@@ -179,9 +180,7 @@ fun RetryView(
         Text(error, color = Color.Red, fontSize = 20.sp)
         Spacer(modifier = Modifier.height(10.dp))
         Button(
-
             onClick = { onRetry() },
-
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text(text = "Retry")
