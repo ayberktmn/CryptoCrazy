@@ -1,3 +1,3 @@
 package com.ayberk.cryptocrazy.Model
 
-class CryptoList: ArrayList<CryptoListItem>()
+class CryptoList : ArrayList<CryptoListItem>()

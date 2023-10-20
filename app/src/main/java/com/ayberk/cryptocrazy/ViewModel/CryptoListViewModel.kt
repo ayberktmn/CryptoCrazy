@@ -12,71 +12,69 @@ import kotlinx.coroutines.launch
 import retrofit2.http.Query
 import javax.inject.Inject
 
+
 @HiltViewModel
 class CryptoListViewModel @Inject constructor(
     private val repository: CryptoRepository
-):ViewModel(){
+) : ViewModel() {
 
     var cryptoList = mutableStateOf<List<CryptoListItem>>(listOf())
     var errorMessage = mutableStateOf("")
     var isLoading = mutableStateOf(false)
 
-    private var initialCryptoList = listOf<CryptoListItem>()  // indirdiğimiz verileri bu değişkene kaydediyoruz arama verileri için
+    private var initialCryptoList = listOf<CryptoListItem>()
     private var isSearchStarting = true
 
     init {
         loadCryptos()
     }
 
-    fun searchCryptoList(query: String){
-        val  listToSearch = if(isSearchStarting){
+
+    fun searchCryptoList(query: String) {
+        val listToSearch = if(isSearchStarting) {
             cryptoList.value
-        }else{
+        } else {
             initialCryptoList
         }
-
-        viewModelScope.launch(Dispatchers.Default){
-            if (query.isEmpty()){
+        viewModelScope.launch(Dispatchers.Default) {
+            if(query.isEmpty()) {
                 cryptoList.value = initialCryptoList
                 isSearchStarting = true
                 return@launch
             }
             val results = listToSearch.filter {
-                it.currency.contains(query.trim(),ignoreCase = true)
+                it.currency.contains(query.trim(), ignoreCase = true)
             }
-             if (isSearchStarting){
-                 initialCryptoList = cryptoList.value
-                 isSearchStarting = false
-             }
+            if(isSearchStarting) {
+                initialCryptoList = cryptoList.value
+                isSearchStarting = false
+            }
             cryptoList.value = results
         }
     }
 
-
-    fun loadCryptos(){
+    fun loadCryptos() {
         viewModelScope.launch {
             isLoading.value = true
             val result = repository.getCryptoList()
             when(result) {
-
-                is Resource.Success ->{
-                    val cryptoItems = result.data!!.mapIndexed { index, cryptoListItem ->
-                        CryptoListItem(cryptoListItem.currency,cryptoListItem.price)
+                is Resource.Success -> {
+                    val cryptoItems = result.data!!.mapIndexed { index, item ->
+                        CryptoListItem(item.currency,item.price)
                     } as List<CryptoListItem>
 
                     errorMessage.value = ""
                     isLoading.value = false
                     cryptoList.value += cryptoItems
                 }
-
-                is Resource.Error ->{
+                is Resource.Error -> {
                     errorMessage.value = result.message!!
                     isLoading.value = false
                 }
-
-                is Resource.Loading -> TODO()
+                is Resource.Loading -> {
+                    errorMessage.value = ""
+                }
             }
-
         }
     }
 }
