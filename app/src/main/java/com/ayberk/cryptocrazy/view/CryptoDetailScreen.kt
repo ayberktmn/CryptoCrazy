@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -36,40 +37,6 @@ fun CryptoDetailScreen(
     navController: NavController,
     viewModel: CryptoDetailViewModel = hiltViewModel()
 ) {
-    /*
-
-    //Step 1 -> Wrong
-
-       val scope = rememberCoroutineScope()
-       //Stateless
-       //var cryptoItem : Resource<Crypto> = Resource.Loading()
-
-       //Stateful
-       var cryptoItem by remember { mutableStateOf<Resource<Crypto>>(Resource.Loading())}
-
-         scope.launch {
-             cryptoItem = viewModel.getCrypto(id)
-             println(cryptoItem.data)
-         }
-
-      */
-
-    /*
-       //Step 2 -> Better
-
-       //Stateless
-          //var cryptoItem : Resource<Crypto> = Resource.Loading()
-
-          //Stateful
-          var cryptoItem by remember { mutableStateOf<Resource<Crypto>>(Resource.Loading())}
-
-            LaunchedEffect(key1 = Unit) {
-                cryptoItem = viewModel.getCrypto(id)
-                println(cryptoItem.data)
-            }
-    */
-
-    //Step 3 -> Best
 
     val cryptoItem = produceState<Resource<Crypto>>(initialValue = Resource.Loading()) {
         value = viewModel.getCrypto(id)
@@ -95,7 +62,7 @@ fun CryptoDetailScreen(
                     )
 
                     Image(painter = rememberImagePainter(data = selectedCrypto.logo_url),
-                        contentDescription = selectedCrypto.name,
+                        contentDescription = selectedCrypto.logo_url,
                         modifier = Modifier
                             .padding(16.dp)
                             .size(200.dp, 200.dp)
@@ -119,7 +86,7 @@ fun CryptoDetailScreen(
                 }
 
                 is Resource.Loading -> {
-                    CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                    CircularProgressIndicator(color = androidx.compose.ui.graphics.Color.Blue)
                 }
 
             }

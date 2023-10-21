@@ -24,11 +24,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ayberk.cryptocrazy.Model.CryptoItem
 import com.ayberk.cryptocrazy.Model.CryptoListItem
 import com.ayberk.cryptocrazy.ViewModel.CryptoListViewModel
 
@@ -49,7 +49,7 @@ fun CryptoListScreen(
                 textAlign = TextAlign.Center,
                 fontSize = 44.sp,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = Color.White
             )
             Spacer(modifier = Modifier.height(10.dp))
             SearchBar(
@@ -65,7 +65,7 @@ fun CryptoListScreen(
         }
     }
 }
-
+@Preview(showBackground = true)
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
